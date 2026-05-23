@@ -1,0 +1,466 @@
+from textwrap import dedent
+
+html = dedent("""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday My Love</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#060816;
+    --card:#111827cc;
+    --accent:#ff4fa3;
+    --accent2:#7c4dff;
+    --text:#f5f7ff;
+    --muted:#a9b1d6;
+    --glass: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.12);
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+html{
+    scroll-behavior:smooth;
+}
+body{
+    font-family:'Inter',sans-serif;
+    background: radial-gradient(circle at top, #1a1f4d 0%, var(--bg) 50%);
+    color:var(--text);
+    overflow-x:hidden;
+}
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+}
+.glow{
+    position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    filter:blur(120px);
+    opacity:.18;
+    z-index:-1;
+}
+.glow.one{
+    background:var(--accent);
+    top:-120px;
+    left:-80px;
+}
+.glow.two{
+    background:var(--accent2);
+    right:-100px;
+    bottom:-100px;
+}
+section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:80px 10%;
+    position:relative;
+}
+.hero{
+    text-align:center;
+}
+.badge{
+    display:inline-block;
+    padding:10px 18px;
+    border:1px solid var(--border);
+    background:var(--glass);
+    border-radius:999px;
+    backdrop-filter:blur(12px);
+    color:#ffd7ec;
+    margin-bottom:24px;
+    animation: float 4s ease-in-out infinite;
+}
+h1{
+    font-size:clamp(3rem,8vw,7rem);
+    line-height:1;
+    font-weight:800;
+}
+.gradient{
+    background:linear-gradient(90deg,var(--accent),#ffdf6b,var(--accent2));
+    -webkit-background-clip:text;
+    color:transparent;
+}
+.sub{
+    max-width:760px;
+    margin:28px auto;
+    font-size:1.2rem;
+    color:var(--muted);
+    line-height:1.8;
+}
+.cta{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    margin-top:18px;
+    padding:16px 30px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:white;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 10px 35px rgba(255,79,163,.35);
+    transition:.35s ease;
+}
+.cta:hover{
+    transform:translateY(-5px) scale(1.03);
+}
+.card{
+    width:min(100%,900px);
+    padding:40px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:32px;
+    backdrop-filter:blur(16px);
+    box-shadow:0 15px 50px rgba(0,0,0,.45);
+}
+.section-title{
+    font-size:2.8rem;
+    margin-bottom:16px;
+    font-family:'Playfair Display', serif;
+}
+.message{
+    color:var(--muted);
+    line-height:1.9;
+    font-size:1.08rem;
+}
+.timeline{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:36px;
+}
+.memory{
+    padding:24px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    transition:.4s ease;
+}
+.memory:hover{
+    transform:translateY(-8px);
+    background:rgba(255,255,255,.07);
+}
+.memory h3{
+    margin-bottom:12px;
+}
+.heart{
+    position:absolute;
+    color:#ff4fa3;
+    animation: rise linear forwards;
+    opacity:.8;
+}
+.typewriter{
+    border-right:3px solid white;
+    white-space:nowrap;
+    overflow:hidden;
+    width:0;
+    animation:typing 5s steps(40,end) forwards, blink .8s infinite;
+}
+.final{
+    text-align:center;
+}
+.final h2{
+    font-size:clamp(2.5rem,7vw,5rem);
+}
+.music{
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index:99;
+    border:none;
+    background:var(--glass);
+    backdrop-filter:blur(10px);
+    color:white;
+    border-radius:50%;
+    width:56px;
+    height:56px;
+    cursor:pointer;
+    border:1px solid var(--border);
+}
+.scroll-indicator{
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    color:var(--muted);
+    font-size:.9rem;
+    animation: float 2.5s infinite;
+}
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-8px)}
+}
+@keyframes rise{
+    from{
+        transform:translateY(0) scale(1);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-100vh) scale(1.8);
+        opacity:0;
+    }
+}
+@keyframes typing{
+    from{width:0}
+    to{width:100%}
+}
+@keyframes blink{
+    50%{border-color:transparent}
+}
+.fade{
+    opacity:0;
+    transform:translateY(50px);
+    transition:1s ease;
+}
+.fade.show{
+    opacity:1;
+    transform:translateY(0);
+}
+.quote{
+    margin-top:28px;
+    font-size:1.4rem;
+    font-weight:600;
+    color:#ffd7ec;
+}
+footer{
+    padding:40px;
+    text-align:center;
+    color:var(--muted);
+}
+@media(max-width:768px){
+    section{
+        padding:70px 7%;
+    }
+    .card{
+        padding:28px;
+    }
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<button class="music" id="musicBtn">♫</button>
+
+<section class="hero">
+    <div>
+        <div class="badge">✨ A Special Birthday Experience ✨</div>
+        <h1>Happy Birthday <br><span class="gradient">My Love</span></h1>
+        <p class="sub">
+            Tonight is not just about celebrating your birthday —
+            it's about celebrating the light, warmth, and happiness you bring into my life every single day.
+        </p>
+        <button class="cta" onclick="document.getElementById('journey').scrollIntoView()">
+            Begin Our Journey →
+        </button>
+        <div class="scroll-indicator">Scroll to continue</div>
+    </div>
+</section>
+
+<section id="journey">
+    <div class="card fade">
+        <h2 class="section-title">To The Most Beautiful Soul</h2>
+        <p class="message">
+            Every moment with you feels like a scene from a dream I never want to wake up from.
+            Your smile calms my storms, your laugh becomes my favorite melody, and your presence makes ordinary days unforgettable.
+            <br><br>
+            On your special day, I just want you to know:
+            you are deeply loved, endlessly admired, and forever appreciated.
+        </p>
+
+        <div class="timeline">
+            <div class="memory">
+                <h3>💖 The First Spark</h3>
+                <p>The moment we met, something inside me quietly changed forever.</p>
+            </div>
+            <div class="memory">
+                <h3>🌙 Late Night Talks</h3>
+                <p>Hours felt like minutes whenever we talked about dreams, fears, and everything in between.</p>
+            </div>
+            <div class="memory">
+                <h3>✨ Little Moments</h3>
+                <p>It's the tiny moments with you that became the biggest memories in my heart.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="card fade">
+        <h2 class="section-title">A Letter For You</h2>
+        <div class="typewriter">
+            You are my favorite notification, favorite thought, and favorite person.
+        </div>
+
+        <p class="message" style="margin-top:30px;">
+            I hope this year brings you endless happiness, success, peace, and every beautiful thing your heart desires.
+            And no matter where life takes us, I want you to remember this:
+            I will always cheer for your happiness louder than anyone else.
+        </p>
+
+        <p class="quote">
+            “If I had to choose again, I would still choose you.”
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="card final fade">
+        <h2>🎂 Happy Birthday Darling 🎂</h2>
+        <p class="sub">
+            May your smile shine brighter than the stars above,
+            and may your heart always stay as beautiful as it is today.
+        </p>
+
+        <button class="cta" onclick="launchConfetti()">
+            Celebrate Now 🎉
+        </button>
+    </div>
+</section>
+
+<footer>
+    Made with love ❤️
+</footer>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+
+let w,h,stars=[];
+function resize(){
+    w=canvas.width=window.innerWidth;
+    h=canvas.height=window.innerHeight;
+}
+window.addEventListener('resize',resize);
+resize();
+
+for(let i=0;i<200;i++){
+    stars.push({
+        x:Math.random()*w,
+        y:Math.random()*h,
+        r:Math.random()*2,
+        s:Math.random()*0.5
+    });
+}
+
+function animate(){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle='white';
+    stars.forEach(star=>{
+        star.y+=star.s;
+        if(star.y>h) star.y=0;
+        ctx.globalAlpha=Math.random();
+        ctx.beginPath();
+        ctx.arc(star.x,star.y,star.r,0,Math.PI*2);
+        ctx.fill();
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+function createHeart(){
+    const heart=document.createElement('div');
+    heart.className='heart';
+    heart.innerHTML='❤';
+    heart.style.left=Math.random()*100+'vw';
+    heart.style.bottom='-20px';
+    heart.style.fontSize=(Math.random()*20+14)+'px';
+    heart.style.animationDuration=(Math.random()*5+5)+'s';
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),10000);
+}
+setInterval(createHeart,500);
+
+const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            entry.target.classList.add('show');
+        }
+    })
+},{threshold:0.15});
+
+document.querySelectorAll('.fade').forEach(el=>observer.observe(el));
+
+function launchConfetti(){
+    for(let i=0;i<120;i++){
+        const conf=document.createElement('div');
+        conf.style.position='fixed';
+        conf.style.width='10px';
+        conf.style.height='10px';
+        conf.style.background='hsl('+Math.random()*360+'deg,100%,60%)';
+        conf.style.left=Math.random()*100+'vw';
+        conf.style.top='-10px';
+        conf.style.zIndex='9999';
+        conf.style.borderRadius='50%';
+        conf.style.transition='transform 3s linear, opacity 3s';
+        document.body.appendChild(conf);
+
+        setTimeout(()=>{
+            conf.style.transform=`translateY(${window.innerHeight+100}px) rotate(720deg)`;
+            conf.style.opacity='0';
+        },50);
+
+        setTimeout(()=>conf.remove(),3200);
+    }
+}
+
+const musicBtn = document.getElementById('musicBtn');
+let audioCtx;
+let playing=false;
+
+musicBtn.addEventListener('click',()=>{
+    if(!audioCtx){
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if(!playing){
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type='sine';
+        osc.frequency.setValueAtTime(261.63,audioCtx.currentTime);
+
+        gain.gain.setValueAtTime(0.02,audioCtx.currentTime);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+
+        musicBtn.dataset.osc='active';
+        musicBtn.innerHTML='❚❚';
+        playing=true;
+
+        musicBtn.oscillator = osc;
+    } else {
+        musicBtn.oscillator.stop();
+        musicBtn.innerHTML='♫';
+        playing=false;
+    }
+});
+</script>
+
+</body>
+</html>
+""")
+
+path = "/mnt/data/birthday_greeting_website.html"
+with open(path, "w", encoding="utf-8") as f:
+    f.write(html)
+
+print(f"Saved HTML file to: {path}")
